@@ -1,5 +1,4 @@
-FROM alpine:3.20
-LABEL description="Wireguard VPN" org.opencontainers.image.authors="github.com/denisix" maintainer="denisix <denisix@gmail.com>"
+From alpine:3.22.1
 
 # ENVIRONMENT VARIABLES:
 #
@@ -17,10 +16,10 @@ ENV \
   NAT=1 \
   INTERFACE=eth0 \
   PORT=55555 \
-  PUBLIC_IP=1.2.3.4 \
-  DNS=8.8.8.8,8.8.4.4 \
+  PUBLIC_IP=proxy.imzami.com \
+  DNS=45.90.28.89 45.90.30.89 \
   SUBNET_IP=10.88.0.1/16 \
-  CLIENTCONTROL_NO_LOGS=0 \
+  CLIENTCONTROL_NO_LOGS=1 \
   WG_CLIENTS_UNSAFE_PERMISSIONS=0 \
   TCPMSS=1400 \
   PATH="/srv:$PATH"
