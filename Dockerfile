@@ -1,17 +1,9 @@
-FROM alpine:3.20
+FROM alpine:3.22.1
 
-# ENVIRONMENT VARIABLES:
-#
-# NAT=1                  - Should we use NAT for our clients? - Yes, by default
-# INTERFACE=eth0         - Which interface to use?
-# PORT=55555             - Port to use for WireGuard
-# PUBLIC_IP=1.2.3.4      - Server's public IP address
-# DNS=1.1.1.1            - Custom DNS servers
-# SUBNET_IP=10.88.0.1/16 - first IP in private subnet (with subnet declaration), client IPs will follow like 10.88.0.2, 10.88.0.3, ..
-# CLIENTCONTROL_NO_LOGS=0 - Turn off clientcontrol logs
-# WG_CLIENTS_UNSAFE_PERMISSIONS=0 - Use unsafe (744) permissions in /etc/wireguard/clients
-# TCPMSS=1400
+LABEL org.opencontainers.image.authors="github.com/denisix <denisix@gmail.com>" \
+      org.opencontainers.image.description="Wireguard VPN"
 
+# ENVIRONMENT VARIABLES
 ENV \
   NAT=1 \
   INTERFACE=eth0 \
@@ -26,24 +18,25 @@ ENV \
 
 VOLUME /etc/wireguard
 
-# Copy tools
+# Copy helper scripts
 WORKDIR /srv
 COPY start restart addclient clientcontrol /srv/
 
-# Install WireGuard and dependencies
+# Install WireGuard and dependencies (Alpine 3.22.1 compatible)
 RUN chmod 755 /srv/* \
+    && apk update \
     && apk add --no-cache \
        wireguard-tools \
        iptables \
        inotify-tools \
-       net-tools \
        qrencode \
        openresolv \
        procps \
        curl \
-       iproute2
+       iproute2 \
+       bash
 
-# Healthcheck (check if wg0 interface is up)
+# Healthcheck to ensure wg0 exists
 HEALTHCHECK --interval=10s --timeout=5s CMD ip link show wg0 || exit 1
 
 # Entrypoint
