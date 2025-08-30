@@ -1,4 +1,4 @@
-From alpine:3.22.1
+FROM alpine:3.22.1
 
 # ENVIRONMENT VARIABLES:
 #
@@ -17,7 +17,7 @@ ENV \
   INTERFACE=eth0 \
   PORT=55555 \
   PUBLIC_IP=proxy.imzami.com \
-  DNS=45.90.28.89 45.90.30.89 \
+  DNS="45.90.28.89 45.90.30.89" \
   SUBNET_IP=10.88.0.1/16 \
   CLIENTCONTROL_NO_LOGS=1 \
   WG_CLIENTS_UNSAFE_PERMISSIONS=0 \
@@ -31,11 +31,20 @@ WORKDIR /srv
 COPY start restart addclient clientcontrol /srv/
 
 # Install WireGuard and dependencies
-# hadolint ignore=DL3008
 RUN chmod 755 /srv/* \
-    && apk add --no-cache wireguard-tools iptables inotify-tools net-tools libqrencode-tools openresolv procps curl iproute2
+    && apk add --no-cache \
+       wireguard-tools \
+       iptables \
+       inotify-tools \
+       net-tools \
+       qrencode \
+       openresolv \
+       procps \
+       curl \
+       iproute2
 
-HEALTHCHECK --interval=5s --timeout=5s CMD /sbin/ip -o li sh wg0 || exit 1
+# Healthcheck (check if wg0 interface is up)
+HEALTHCHECK --interval=10s --timeout=5s CMD ip link show wg0 || exit 1
 
 # Entrypoint
-CMD [ "start" ]
+CMD ["/srv/start"]
