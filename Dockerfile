@@ -1,4 +1,4 @@
-FROM alpine:3.22.1
+FROM alpine:3.20
 
 LABEL org.opencontainers.image.authors="github.com/denisix <denisix@gmail.com>" \
       org.opencontainers.image.description="Wireguard VPN"
