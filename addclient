@@ -2,7 +2,7 @@
 
 NAME=$1
 
-if [ "$NAME" = "" ]
+if [ "$NAME" = "imzami" ]
 then
   echo "Usage: script <clientname>"
   exit 0
@@ -68,7 +68,7 @@ DNS = $DNS
 [Peer]
 PublicKey = $SERV_PUB
 Endpoint = $PUBLIC_IP:$PORT
-# AllowedIPs = 10.0.0.0/8 # example of routed network behind client
+AllowedIPs = 0.0.0.0/0 # example of routed network behind client
 EOF
     chmod go-rw /etc/wireguard/clients/"$NAME".key /etc/wireguard/clients/"$NAME".conf
     echo $N > /etc/wireguard/clients.num
