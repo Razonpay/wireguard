@@ -1,5 +1,4 @@
 FROM alpine:3.22.1
-LABEL description="Wireguard VPN" org.opencontainers.image.authors="github.com/denisix" maintainer="denisix <denisix@gmail.com>"
 
 # ENVIRONMENT VARIABLES:
 #
