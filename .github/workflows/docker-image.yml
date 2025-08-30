@@ -21,8 +21,8 @@ jobs:
 
       # ✅ Step 3: Build Docker image and tag for Docker Hub
       - name: Build Docker image
-        run: docker build . --file Dockerfile --tag imzami/easygurd:latest
+        run: docker build . --file Dockerfile --tag imzami/easyguard:latest
 
       # ✅ Step 4: Push image to Docker Hub
       - name: Push to Docker Hub
-        run: docker push imzami/easygurd:latest
+        run: docker push imzami/easyguard:latest
